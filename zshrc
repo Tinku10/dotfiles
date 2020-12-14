@@ -104,6 +104,18 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+blk=$'\x1b[90m' # Sets text to black
+red=$'\x1b[31m' # Sets text to red
+grn=$'\x1b[92m' # Sets text to green
+ylw=$'\x1b[93m' # Sets text to yellow
+blu=$'\x1b[94m' # Sets text to blue
+pur=$'\x1b[95m' # Sets text to purple
+cyn=$'\x1b[96m' # Sets text to cyan
+wht=$'\x1b[97m' # Sets text to white
+rst=$'\x1b[0m'  # resets to default terminal color
+grey=$'\x1b[90m'
+bold=$'\x1b[1m'
+
 # stress test for C++ (stress filename)
 stress() {
     file=$1
@@ -121,7 +133,7 @@ stress() {
 # compile C++ code with the given filename
 make() {
     filename=$1
-    g++ -std=c++17 $filename -Wall -Wextra -Wshadow -fsanitize=address -fsanitize=undefined -Wshift-overflow -D_GLIBCXX_DEBUG  -fno-omit-frame-pointer -o  "${filename%.*}"
+    g++ -std=c++17 $filename.cpp -Wall -Wextra -Wshadow -fsanitize=address -fsanitize=undefined -Wshift-overflow -D_GLIBCXX_DEBUG  -fno-omit-frame-pointer -o  "${filename}"
 }
 
 #generate test cases for stress testing
@@ -144,4 +156,15 @@ int main() {
     $(touch gen.cpp)
     echo $var > $dir/gen.cpp
 
+}
+
+# print a list of commands for competitive programming
+cpcom(){
+    echo
+    echo -e "${grn}$ ""${bold}run problem ${grey}<name of the problem(s)>${rst}  -> ${wht}parses the problem from the OJ ${rst}"
+    echo -e "${grn}$ ""${bold}run contest ${grey}<number of problems>${rst}      -> ${wht}parses the defined number of problems from the OJ${rst}"
+    echo -e "${grn}$ ""${bold}run test    ${grey}<no arguments>${rst}            -> ${wht}test your code against the sample test cases parsed from the OJ${rst}"
+    echo -e "${grn}$ ""${bold}make        ${grey}<filename>${rst}                -> ${wht}compiles the C++ code with the predefined flags${rst}"
+    echo -e "${grn}$ ""${bold}generate    ${grey}<no arguments>${rst}            -> ${wht}generates a gen file to run stress test${rst}"
+    echo -e "${grn}$ ""${bold}stress      ${grey}<filename>${rst}                -> ${wht}runs stress test comparing <filename>.cpp to brute.cpp${rst}"
 }
