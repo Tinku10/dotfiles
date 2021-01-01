@@ -158,6 +158,19 @@ int main() {
 
 }
 
+# runs a compiled file to give input and output different color
+makes() {
+  arg=$1
+  $(touch ans)
+  echo -n ${blu} 
+  ./$arg > ans
+  echo -n ${rst}
+  echo -n ${grn} 
+  cat ans
+  echo -n ${rst}
+  rm ans
+}
+
 # print a list of commands for competitive programming
 cpcom(){
     echo
@@ -165,6 +178,7 @@ cpcom(){
     echo -e "${grn}$ ""${bold}run contest ${grey}<number of problems>${rst}      -> ${wht}parses the defined number of problems from the OJ${rst}"
     echo -e "${grn}$ ""${bold}run test    ${grey}<no arguments>${rst}            -> ${wht}test your code against the sample test cases parsed from the OJ${rst}"
     echo -e "${grn}$ ""${bold}make        ${grey}<filename>${rst}                -> ${wht}compiles the C++ code with the predefined flags${rst}"
+    echo -e "${grn}$ ""${bold}makes       ${grey}<filename>${rst}                -> ${wht}runs the compiled file with input and output coloring${rst}"
     echo -e "${grn}$ ""${bold}generate    ${grey}<no arguments>${rst}            -> ${wht}generates a gen file to run stress test${rst}"
     echo -e "${grn}$ ""${bold}stress      ${grey}<filename>${rst}                -> ${wht}runs stress test comparing <filename>.cpp to brute.cpp${rst}"
 }

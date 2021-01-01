@@ -68,8 +68,11 @@ Plug 'Tinku10/dsa'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Valloric/YouCompleteMe'
 Plug 'pechorin/any-jump.vim'
+Plug 'kien/ctrlp.vim'
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
+" prepopulate the file with a template
 function Template(tmpl_file)
     exe "0read " . a:tmpl_file
     let substDict = {}
@@ -82,9 +85,15 @@ endfunction
 
 autocmd BufNewFile *.c,*.cc,*.cpp,*.h call Template("~/.vim/tmpl.cpp")
 
-let g:gruvbox_contrast_dark = 'medium'
+" enable zsh commands from within vim
+" autocmd vimenter * let &shell='/bin/zsh -i'
+
+let g:gruvbox_contrast_dark = 'soft'
 " let g:autosave_timer      = 5000 
+"
+" kind of autosave 
 autocmd TextChanged,TextChangedI <buffer> silent write
+
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -116,6 +125,9 @@ let g:airline#extensions#tabline#formatter = 'default'
 colorscheme gruvbox
 " colorscheme one
 set background=dark
+
+" allow Vim to have a transparent background of the terminal
+hi! Normal ctermbg=NONE guibg=NONE
 
 if executable('rg')
     let g:rg_derive_root='true'
@@ -167,6 +179,7 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap X "_d
 :nnoremap <F10> :buffers<CR>:buffer<Space>
 nnoremap <silent> <Leader>v :NERDTreeFind<CR>
+
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:DTreeChDirMode=2
@@ -178,8 +191,10 @@ let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize =30
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 " nnoremap <silent> <F2> :NERDTreeFind<CR>
+
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 :imap jj <Esc>
 map <F8> :w <CR> :!clear ; g++ -Wall -Wextra -pedantic -std=c++17 -O2 -Wformat=2 -Wfloat-equal -Wconversion -Wcast-qual -Wunused-variable -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector %; if [ -f a.out  ]; then time ./a.out; rm a.out; fi <CR>
-nnoremap <C-c> :w <CR> :!clear ; g++ -o  a % -std=c++17 -Wall -fsanitize=address -fsanitize=undefined -Wshift-overflow <CR>
-n
+nnoremap <C-c> :w <CR> :!clear ; g++ -o  %:r % -std=c++17 -Wall -fsanitize=address -fsanitize=undefined -Wshift-overflow <CR>
+" nnoremap <C-c> :w <CR> :!clear; makef %:r <CR>
+nnoremap <C-x> :!./%:r <Enter>
