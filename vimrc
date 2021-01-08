@@ -23,6 +23,7 @@ set scrolloff=8
 set noshowmode
 set linespace=3
 set completeopt=menuone,noinsert,noselect
+" set showmatch
 " Give more space for displaying messages.
 set cmdheight=2
 "
@@ -42,24 +43,25 @@ set clipboard=unnamedplus
 
 
 call plug#begin('~/.vim/plugged')
+" Plug 'scrooloose/syntastic'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/Tabtastic'
-Plug 'vim-utils/vim-man'
+" Plug 'vim-utils/vim-man'
 Plug 'mbbill/undotree'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'phanviet/vim-monokai-pro'
+" Plug 'phanviet/vim-monokai-pro'
 Plug 'flazz/vim-colorschemes'
-Plug 'chriskempson/base16-vim'
+" Plug 'chriskempson/base16-vim'
 Plug 'morhetz/gruvbox'
-Plug 'nlknguyen/papercolor-theme'
-Plug 'sainnhe/gruvbox-material'
-Plug 'rakr/vim-one'
+" Plug 'nlknguyen/papercolor-theme'
+" Plug 'sainnhe/gruvbox-material'
+" Plug 'rakr/vim-one'
 Plug 'jremmen/vim-ripgrep'
 " Plug 'chrisbra/vim-autosave'
 Plug 'tpope/vim-commentary'
@@ -67,8 +69,9 @@ Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'Tinku10/dsa'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Valloric/YouCompleteMe'
-Plug 'pechorin/any-jump.vim'
+" Plug 'pechorin/any-jump.vim'
 Plug 'kien/ctrlp.vim'
+Plug 'airblade/vim-gitgutter'
 " Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
@@ -88,7 +91,7 @@ autocmd BufNewFile *.c,*.cc,*.cpp,*.h call Template("~/.vim/tmpl.cpp")
 " enable zsh commands from within vim
 " autocmd vimenter * let &shell='/bin/zsh -i'
 
-let g:gruvbox_contrast_dark = 'soft'
+let g:gruvbox_contrast_dark = 'medium'
 " let g:autosave_timer      = 5000 
 "
 " kind of autosave 
@@ -97,6 +100,11 @@ autocmd TextChanged,TextChangedI <buffer> silent write
 if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+" add ripgrep as the search engine for CtrlP
+if executable('rg')
+  let g:ctrlp_user_command = 'rg %s --files --hidden --color=never --glob ""'
 endif
 
 " let g:airline_powerline_fonts = 1
@@ -121,6 +129,18 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 " let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
+" let g:ycm_max_diagnostics_to_display = 30
+" turn off syntax checker with ycm
+" let g:ycm_show_diagnostics_ui = 1
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 colorscheme gruvbox
 " colorscheme one
@@ -133,7 +153,13 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 
-let loaded_matchparen = 1
+" uncomment to turn off matching parenthesis
+" let loaded_matchparen = 1
+
+" matching parenthesis colored on cursor position
+hi MatchParen cterm=bold ctermbg=none ctermfg=131
+
+" leader key mapped to <space>
 let mapleader = " "
 
 let g:netrw_browse_split = 2
@@ -142,9 +168,11 @@ let g:netrw_winsize = 25
 
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8  }  }
 let $FZF_DEFAULT_OPTS='--reverse'
+
 let g:airline_theme='angr'
 " let g:airline_theme='one' 
 
+" buffer switching using buffet plugin
 " nmap <leader>1 <Plug>BuffetSwitch(1)
 " nmap <leader>2 <Plug>BuffetSwitch(2)
 " nmap <leader>3 <Plug>BuffetSwitch(3)
@@ -156,6 +184,8 @@ let g:airline_theme='angr'
 " nmap <leader>9 <Plug>BuffetSwitch(9)
 " nmap <leader>0 <Plug>BuffetSwitch(10)
 
+nnoremap <leader>f :CtrlP<CR>
+nnoremap <leader>n :nohl<CR>
 nnoremap <leader>gc :GBranches<CR>
 nnoremap <leader>ga :Git fetch --all<CR>
 nnoremap <leader>grum :Git rebase upstream/master<CR>
