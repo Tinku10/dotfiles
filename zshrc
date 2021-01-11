@@ -104,10 +104,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+
+ylw=$'\x1b[33m' # Sets text to black
 blk=$'\x1b[90m' # Sets text to black
 red=$'\x1b[31m' # Sets text to red
 grn=$'\x1b[92m' # Sets text to green
-ylw=$'\x1b[93m' # Sets text to yellow
+lylw=$'\x1b[93m' # Sets text to yellow
 blu=$'\x1b[94m' # Sets text to blue
 pur=$'\x1b[95m' # Sets text to purple
 cyn=$'\x1b[96m' # Sets text to cyan
@@ -133,7 +135,11 @@ stress() {
 # compile C++ code with the given filename
 make() {
     filename=$1
-    g++ -std=c++17 $filename.cpp -Wall -Wextra -Wshadow -fsanitize=address -fsanitize=undefined -Wshift-overflow -D_GLIBCXX_DEBUG  -fno-omit-frame-pointer -o  "${filename}"
+    g++ -std=c++17 $filename.cpp -Wall -Wextra -Wshadow -fsanitize=address -fsanitize=undefined -Wshift-overflow -D_GLIBCXX_DEBUG  -fno-omit-frame-pointer  -o  "${filename}"
+}
+makef() {
+    filename=$1
+    g++ -std=c++17 $filename.cpp -Wall -fsanitize=address -fsanitize=undefined -Wshift-overflow -o  "${filename}"
 }
 
 #generate test cases for stress testing
@@ -159,13 +165,13 @@ int main() {
 }
 
 # runs a compiled file to give input and output different color
-makes() {
+runs() {
   arg=$1
   $(touch ans)
-  echo -n ${blu} 
+  echo -n ${pur} 
   ./$arg > ans
   echo -n ${rst}
-  echo -n ${grn} 
+  echo -n ${bold}${blu} 
   cat ans
   echo -n ${rst}
   rm ans
@@ -175,10 +181,26 @@ makes() {
 cpcom(){
     echo
     echo -e "${grn}$ ""${bold}run problem ${grey}<name of the problem(s)>${rst}  -> ${wht}parses the problem from the OJ ${rst}"
-    echo -e "${grn}$ ""${bold}run contest ${grey}<number of problems>${rst}      -> ${wht}parses the defined number of problems from the OJ${rst}"
+    echo -e "${grn}$ ""${bold}run contest ${grey}<number of problems>${rst}      -> ${wht}parses the defined number of problems from a contest${rst}"
     echo -e "${grn}$ ""${bold}run test    ${grey}<no arguments>${rst}            -> ${wht}test your code against the sample test cases parsed from the OJ${rst}"
     echo -e "${grn}$ ""${bold}make        ${grey}<filename>${rst}                -> ${wht}compiles the C++ code with the predefined flags${rst}"
-    echo -e "${grn}$ ""${bold}makes       ${grey}<filename>${rst}                -> ${wht}runs the compiled file with input and output coloring${rst}"
+    echo -e "${grn}$ ""${bold}makef       ${grey}<filename>${rst}                -> ${wht}same as make, but faster${rst}"
+    echo -e "${grn}$ ""${bold}runs        ${grey}<filename>${rst}                -> ${wht}runs the compiled file with input and output coloring${rst}"
     echo -e "${grn}$ ""${bold}generate    ${grey}<no arguments>${rst}            -> ${wht}generates a gen file to run stress test${rst}"
     echo -e "${grn}$ ""${bold}stress      ${grey}<filename>${rst}                -> ${wht}runs stress test comparing <filename>.cpp to brute.cpp${rst}"
+    echo
 }
+
+goto(){
+    dir=${1:-""};
+    if [ -z "$dir" ] 
+    then
+        cd /mnt/d/PersonalFiles/Codes/CP/
+    else
+        cd /mnt/d/PersonalFiles/Codes/CP/contest/
+        cd $dir
+    fi
+}
+
+# using vim mode in zsh with jj key in place of ESC
+bindkey jj vi-cmd-mode
