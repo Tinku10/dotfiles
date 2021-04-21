@@ -45,6 +45,8 @@ ZSH_THEME="alanpeabody"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -68,7 +70,11 @@ ZSH_THEME="alanpeabody"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -97,14 +103,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
 ylw=$'\x1b[33m' # Sets text to black
 blk=$'\x1b[90m' # Sets text to black
 red=$'\x1b[31m' # Sets text to red
@@ -147,11 +145,9 @@ generate() {
     var="#include <algorithm>
 #include <bits/stdc++.h>
 using namespace std;
-
 int rand(int a, int b) {
     return a + rand() % (b - a + 1);
 }
-
 int main() {
     srand(time(NULL));
     std::random_device rd;
@@ -195,12 +191,17 @@ goto(){
     dir=${1:-""};
     if [ -z "$dir" ] 
     then
-        cd /mnt/d/PersonalFiles/Codes/CP/
+        cd ~/Documents/CP/
     else
-        cd /mnt/d/PersonalFiles/Codes/CP/contest/
+        cd ~/Documents/CP/contest/
         cd $dir
     fi
 }
 
 # using vim mode in zsh with jj key in place of ESC
 bindkey jj vi-cmd-mode
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+alias theme-reset="kitty @ --to unix:/tmp/kitty set-colors --reset"
+alias theme="cd ~/.config/kitty/kitty-themes && fzf --height 40% --preview 'head -n 40 {} && kitty @ --to unix:/tmp/kitty set-colors -a -c {}'; cd -"
