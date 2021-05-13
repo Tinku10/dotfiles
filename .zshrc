@@ -1,6 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 # Path to your oh-my-zsh installation.
 export ZSH="/home/tinku/.oh-my-zsh"
 
@@ -205,3 +206,7 @@ bindkey jj vi-cmd-mode
 
 alias theme-reset="kitty @ --to unix:/tmp/kitty set-colors --reset"
 alias theme="cd ~/.config/kitty/kitty-themes && fzf --height 40% --preview 'head -n 40 {} && kitty @ --to unix:/tmp/kitty set-colors -a -c {}'; cd -"
+alias tmux='tmux -u'
+
+# launch neofetch on startup
+neofetch
